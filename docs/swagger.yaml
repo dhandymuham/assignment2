@@ -1,0 +1,139 @@
+definitions:
+  controllers.Items:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      description:
+        type: string
+      id:
+        type: integer
+      item_code:
+        type: string
+      order_id:
+        type: integer
+      quantity:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  controllers.Order:
+    properties:
+      createdAt:
+        type: string
+      customer_id:
+        type: integer
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/controllers.Items'
+        type: array
+      name:
+        type: string
+      ordered_at:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /orders:
+    get:
+      consumes:
+      - application/json
+      description: Get all orders from database
+      parameters:
+      - description: Get Orders
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Order'
+      summary: Get All Orders
+      tags:
+      - orders
+    post:
+      consumes:
+      - application/json
+      description: Create a new order to database
+      parameters:
+      - description: 'Create Order with payload '
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Order'
+      summary: Create a new order
+      tags:
+      - createorders customer
+  /orders/:orderId:
+    delete:
+      consumes:
+      - application/json
+      description: Delete order with associations
+      parameters:
+      - description: 'Delete by param '
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Order'
+      summary: Delete order with associations
+      tags:
+      - deleteorders customer
+    put:
+      consumes:
+      - application/json
+      description: Update exists order from database
+      parameters:
+      - description: 'Update Order with payload '
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Order'
+      summary: Create a new order
+      tags:
+      - createorders customer
+swagger: "2.0"
